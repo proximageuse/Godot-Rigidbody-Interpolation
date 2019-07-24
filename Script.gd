@@ -37,7 +37,7 @@ func _physics_process(delta):
 		if interpolatedNode == null:
 			print("Can't find node to interp!")
 	else:
-		# Setting all pf the variables we need to interpolate:
+		# Setting all of the variables we need to interpolate:
 		
 		# Finding & setting the physics tickRate at the time of this physics tick
 		tickRate = delta * 1000 
