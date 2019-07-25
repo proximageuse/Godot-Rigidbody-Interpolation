@@ -1,23 +1,24 @@
 extends Spatial
 
-# The name of the node to be interpolated (must be a child of this node)
+# The name of the node to be interpolated. (must be a child of this node)
 var interpolatedNodeName: String = "MeshInstance"
 
-# The actual node reference (you can define this yourself if you want!)
+# The actual node reference. (you can define this yourself if you want!)
 var interpolatedNode: Node
 
-# The previous transform of the interpolatedNode
+# The previous transform of the interpolatedNode.
 var lastTransform: Transform
 
-# The current physics tickRate, in milliseconds
+# The current physics tickRate, defined in milliseconds between each tick.
 var tickRate: float
 
-# The total ticks (in ms) since the last physics tick
+# The time (in MS) at which the last tick happened.
 var lastMS
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Called every frame. 'delta' is the elapsed time since the previous frame
 func _process(delta):
 	if lastTransform != null && lastMS != null:
+		# The amount of time elapsed since the last physics tick, in milliseconds.
 		var msDifference = OS.get_ticks_msec() - lastMS
 		
 		# The factor for interpolating, range is 0.0 - 1.0
@@ -25,10 +26,10 @@ func _process(delta):
 		
 		interpolatedNode.global_transform = lastTransform.interpolate_with(transform, interpolationFactor)
 
-
+# Called every physics tick. 'delta' is the elapsed time since the previous frame
 func _physics_process(delta):
 	if interpolatedNode == null:
-		# Finding the node by name if it doesn't exist yet
+		# Finding the node by name if it doesn't exist yet.
 		interpolatedNode = get_node(interpolatedNodeName)
 		
 		# This is just checking if we successfully found the node and if not, printing something.
@@ -39,11 +40,11 @@ func _physics_process(delta):
 	else:
 		# Setting all of the variables we need to interpolate:
 		
-		# Finding & setting the physics tickRate at the time of this physics tick
+		# Getting the tickRate, based on how much time has passed since the previous tick.
 		tickRate = delta * 1000 
 		
-		# Finding & setting the time at which this tick was
+		# Getting the time at which this tick happened.
 		lastMS = OS.get_ticks_msec()
 		
-		# Finding & setting the transform at the time of this tick
+		# Getting the current transform, as of this tick.
 		lastTransform = transform
